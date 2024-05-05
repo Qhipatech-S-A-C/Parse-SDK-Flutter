@@ -28,7 +28,7 @@ class Subscription<T extends ParseObject> {
   }
 
   T? get copyObject {
-    return _copyObject;
+    return _copyObject?.clone(_copyObject?.toJson(full: true) ?? {});
   }
 }
 
