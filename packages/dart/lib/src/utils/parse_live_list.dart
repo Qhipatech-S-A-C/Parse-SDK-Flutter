@@ -44,6 +44,8 @@ class ParseLiveList<T extends ParseObject> {
 
   int get nextID => _nextID++;
 
+  Set<String?> _newItemsBuffer = <String?>{};
+
   /// is object1 listed after object2?
   bool? after(T object1, T object2) {
     List<String> fields = <String>[];
@@ -356,6 +358,7 @@ class ParseLiveList<T extends ParseObject> {
     //This line seems unnecessary, but without this, weird things happen.
     //(Hide first element, hide second, view first, view second => second is displayed twice)
     object = object.clone(object.toJson(full: true));
+    _newItemsBuffer.add(object.objectId);
 
     if (!fetchedIncludes) {
       await _loadIncludes(object, paths: _includePaths);
@@ -368,6 +371,7 @@ class ParseLiveList<T extends ParseObject> {
                 loaded: loaded, updatedSubItems: _listeningIncludes));
         _eventStreamController.sink.add(ParseLiveListAddEvent<T>(
             i, object.clone(object.toJson(full: true))));
+        _newItemsBuffer.remove(object.objectId);
         return;
       }
     }
@@ -375,9 +379,13 @@ class ParseLiveList<T extends ParseObject> {
         loaded: loaded, updatedSubItems: _listeningIncludes));
     _eventStreamController.sink.add(ParseLiveListAddEvent<T>(
         _list.length - 1, object.clone(object.toJson(full: true))));
+    _newItemsBuffer.remove(object.objectId);
   }
 
   Future<void> _objectUpdated(T object) async {
+    while (_newItemsBuffer.contains(object.objectId)) {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    }
     for (int i = 0; i < _list.length; i++) {
       if (_list[i].object.get<String>(keyVarObjectId) ==
           object.get<String>(keyVarObjectId)) {
