@@ -66,6 +66,16 @@ dynamic parseDecode(dynamic value) {
         final num longitude = map['longitude'] ?? 0.0;
         return ParseGeoPoint(
             latitude: latitude.toDouble(), longitude: longitude.toDouble());
+      case 'Polygon':
+        final List<dynamic> coordinates = map['coordinates'];
+        final List<ParseGeoPoint> points = <ParseGeoPoint>[];
+        for (final dynamic point in coordinates) {
+          final List<dynamic> coord = point as List<dynamic>;
+          points.add(ParseGeoPoint(
+              latitude: coord[0].toDouble(), longitude: coord[1].toDouble()));
+        }
+        return ParsePolygon(coordinates: points);
+
       case 'Relation':
         return ParseRelation.fromJson(map);
     }
