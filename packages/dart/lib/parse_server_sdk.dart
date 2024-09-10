@@ -48,6 +48,7 @@ part 'src/objects/parse_file_base.dart';
 part 'src/objects/parse_file_web.dart';
 part 'src/objects/parse_function.dart';
 part 'src/objects/parse_geo_point.dart';
+part 'src/objects/parse_polygon.dart';
 part 'src/objects/parse_installation.dart';
 part 'src/objects/parse_number.dart';
 part 'src/objects/parse_object.dart';

@@ -46,6 +46,10 @@ dynamic parseEncode(dynamic value, {bool full = false}) {
     return value.toJson(full: full);
   }
 
+  if (value is ParsePolygon) {
+    return value.toJson(full: full);
+  }
+
   if (value is ParseFileBase) {
     return value.toJson(full: full);
   }
