@@ -383,8 +383,6 @@ class ParseLiveList<T extends ParseObject> {
   }
 
   Future<void> _objectUpdated(T object) async {
-    print('ParseLiveList: Object updated');
-    print(object);
     while (_newItemsBuffer.contains(object.objectId)) {
       await Future<void>.delayed(const Duration(milliseconds: 100));
     }
