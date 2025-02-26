@@ -89,6 +89,8 @@ part 'src/objects/parse_operation/parse_remove_operation.dart';
 
 part 'src/objects/parse_operation/parse_remove_relation_operation.dart';
 
+part 'src/objects/parse_polygon.dart';
+
 part 'src/objects/parse_relation.dart';
 
 part 'src/objects/parse_response.dart';
